@@ -92,7 +92,9 @@ class SplashScreenActivity : AppCompatActivity() {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists())
                         {
-                            Toast.makeText(this@SplashScreenActivity, "User already register", Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(this@SplashScreenActivity, "User already register", Toast.LENGTH_SHORT).show()
+                            val model = dataSnapshot.getValue(DriverInfoModel::class.java)
+                            goToHomeActivity(model)
                         }
                         else
                         {
@@ -105,6 +107,12 @@ class SplashScreenActivity : AppCompatActivity() {
                     }
 
                 })
+    }
+
+    private fun goToHomeActivity(model: DriverInfoModel?) {
+        Common.currentUser = model
+        startActivity(Intent(this,DriverHomeActivity::class.java))
+        finish()
     }
 
     private fun showRegisterLayout() {
@@ -164,6 +172,8 @@ class SplashScreenActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         Toast.makeText(this@SplashScreenActivity, "Register Successfully", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
+
+                        goToHomeActivity(model)
 
                         progress_bar.visibility = View.GONE
                     }
